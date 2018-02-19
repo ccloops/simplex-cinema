@@ -7,6 +7,10 @@ class Landing extends Component {
     super(props);
   }
 
+  handleLogin(account) {
+    this.props.doLogin();
+  }
+
   render() {
     return (
       <div>
