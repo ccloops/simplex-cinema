@@ -9,6 +9,7 @@ class Landing extends Component {
 
   handleLogin(account) {
     this.props.doLogin();
+    
   }
 
   render() {
