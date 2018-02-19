@@ -58,6 +58,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "resolve-url-loader": "^2.2.1",
     "sass-loader": "^6.0.6",
     "serve-favicon": "^2.4.5",

@@ -1,8 +1,24 @@
+import './style/main.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
+
 import App from './components/app';
-import './style/main.scss';
+import reducer from './reducer';
+
+import reporter from './lib/redux-reporter';
+import thunk from './lib/redux-thunk';
+
+const store = createStore(reducer, composeWithDevTools(
+  applyMiddleware(thunk, reporter)
+));
 
 const container = document.createElement('div');
 document.body.appendChild(container);
-ReactDOM.render(<App />, container);
+
+ReactDOM.render(
+  <Provider>
+    <App />
+  </Provider>,container);
