@@ -20,7 +20,10 @@ const app = express();
 app.use(bodyParser.json());
 
 // open cors
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGINS.split(' '),
+  credentials: true,
+}));
 
 // Routes and middleware
 app.use(routes);
