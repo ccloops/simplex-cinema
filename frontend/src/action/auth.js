@@ -13,7 +13,7 @@ export const removeTokenAction = () => ({
 
 // Asynchronous
 export const signupAction = account => store => {
-  return superagent.post(`${process.env.API_URL}${routes.SIGNUP_ROUTE}`)
+  return superagent.post(`${__API_URL__}${routes.SIGNUP_ROUTE}`)
     .send(account)
     .withCredentials()
     .then(response => {
@@ -23,7 +23,7 @@ export const signupAction = account => store => {
 };
 
 export const loginAction = account => store => {
-  return superagent.get(`${process.env.API_URL}${routes.LOGIN_ROUTE}`)
+  return superagent.get(`${__API_URL__}${routes.LOGIN_ROUTE}`)
     .auth(account.username, account.password)
     .withCredentials()
     .then(response => {

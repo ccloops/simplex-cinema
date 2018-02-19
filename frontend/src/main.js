@@ -19,6 +19,6 @@ const container = document.createElement('div');
 document.body.appendChild(container);
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={store}>
     <App />
-  </Provider>,container);
+  </Provider>, container);
