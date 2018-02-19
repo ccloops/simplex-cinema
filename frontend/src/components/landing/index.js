@@ -77,4 +77,5 @@ const mapDispatchToProps = dispatch => ({
   doLogin : account => dispatch(authActions.loginAction(account)),
 });
 
+
 export default connect(mapStateToProps,mapDispatchToProps)(Landing);
