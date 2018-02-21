@@ -1,4 +1,5 @@
-import React from 'react';
+import './_app.scss';
+import React, { Fragment } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import Landing from '../landing';
@@ -9,13 +10,13 @@ const App = () => {
   return (
     <div className='app'>
       <BrowserRouter>
-        <div>
+        <Fragment>
           <Route path='*' component={ AuthRedirect } />
           <Route exact path='/' component={ Landing } />
           <Route exact path='/signup' component={ Landing } />
           <Route exact path='/login' component={ Landing } />
           <Route exact path='/dashboard' component={ Dashboard } />
-        </div>
+        </Fragment>
       </BrowserRouter>
     </div>
   );

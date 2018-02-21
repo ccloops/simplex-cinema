@@ -31,7 +31,10 @@ webPackConfig.plugins = [
   new DefinePlugin({
     __API_URL__ : JSON.stringify(process.env.API_URL),
   }),
-  new ExtractTextPlugin('bundle.[hash].css'),
+  new ExtractTextPlugin({
+    disable: process.env.NODE_ENV !== 'production',
+    filename: 'bundle.[hash].css',
+  }),
 ];
 
 if(PRODUCTION) {
@@ -51,6 +54,7 @@ webPackConfig.module = {
     {
       test:  /\.scss$/,
       loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
         use: [
           'css-loader',
           'resolve-url-loader',

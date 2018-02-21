@@ -1,0 +1,17 @@
+@import "vars";
+
+.auth-form {
+  text-align: center;
+  margin: 1em auto;
+  width: 25%;
+
+  input {
+    border: 1px solid black;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0.2em;
+  }
+
+  button {
+    padding: 0.2em;
+  }
+}
