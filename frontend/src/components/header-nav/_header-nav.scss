@@ -1,0 +1,26 @@
+@import "vars";
+
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .logo {
+    font-family: $font-title;
+    font-size: 30px;
+    padding: 0.5em;
+    color: $white-color;
+  }
+
+  .user-dropdown {
+    font-family: $font-title;
+    font-size: 25px;
+    padding: 0.8em 1em 0.5em 0.5em;
+    color: $white-color;
+    text-align: right;
+  }
+
+  width: 100vw;
+  height: 10vh;
+  background-color: $black-color;
+}

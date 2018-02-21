@@ -1,10 +1,15 @@
+import './_dashboard.scss';
 import React from 'react';
+
+import HeaderNav from '../header-nav';
+import Movies from '../movies';
 
 class Dashboard extends React.Component {
   render(){
     return (
       <div className='dashboard'>
-        <h1> Hello from Dashboard </h1>
+        <HeaderNav />
+        <Movies />
       </div>
     );
   }

@@ -44,18 +44,18 @@ class Landing extends Component {
       </section>;
 
     let signUpJSX =
-      <section className='landing-content' id='login'>
+      <section className='landing-content' id='signup'>
         <h1>Your movies, anywhere</h1>
-        <h2>login</h2>
+        <h2>signup</h2>
         <AuthForm onComplete={this.handleSignup} />
         <p>already have an account?</p>
         <Link to='/login'>login</Link>
       </section>;
 
     let loginJSX =
-      <section className='landing-content' id='signup'>
+      <section className='landing-content' id='login'>
         <h1>Your movies, anywhere</h1>
-        <h2>signup</h2>
+        <h2>login</h2>
         <AuthForm type='login' onComplete={this.handleLogin} />
         <p>Dont have an account?</p>
         <Link to='/signup'>signup</Link>
