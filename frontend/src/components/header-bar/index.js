@@ -1,4 +1,4 @@
-import './_header-nav.scss';
+import './_header-bar.scss';
 import React, { Component } from 'react';
 
 class HeaderNav extends Component {
@@ -9,10 +9,10 @@ class HeaderNav extends Component {
 
   render() {
     return (
-      <nav className='header-nav'>
+      <header className='header-bar'>
         <figure className='logo'>Simplex</figure>
         <h3 className='user-dropdown'>User</h3>
-      </nav>
+      </header>
     );
   }
 }

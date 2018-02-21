@@ -8,7 +8,9 @@ class Movies extends Component {
 
   render() {
     return (
-      <nav>This is Movies</nav>
+      <section>
+        movies
+      </section>
     );
   }
 }
