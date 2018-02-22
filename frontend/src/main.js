@@ -11,7 +11,11 @@ import reducer from './reducer';
 import reporter from './lib/redux-reporter';
 import thunk from './lib/redux-thunk';
 
-const store = createStore(reducer, composeWithDevTools(
+const initialState = {
+  movieCategory: 'GENRE',
+};
+
+const store = createStore(reducer, initialState, composeWithDevTools(
   applyMiddleware(thunk, reporter)
 ));
 

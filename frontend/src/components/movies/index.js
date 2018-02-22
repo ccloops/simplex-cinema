@@ -9,7 +9,7 @@ class Movies extends Component {
   render() {
     return (
       <section>
-        movies
+        {this.props.category}
       </section>
     );
   }

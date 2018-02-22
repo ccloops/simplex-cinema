@@ -6,7 +6,6 @@ import Movies from '../movies';
 class MoviesDashboard extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {
