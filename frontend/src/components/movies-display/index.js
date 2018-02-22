@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import GenreView from '../genre-view';
+import AlphabeticalView from '../alphabetical-view';
+import DirectorView from '../director-view';
+import RatingView from '../rating-view';
+import UploadView from '../upload-view';
+
 class MoviesDisplay extends Component {
   constructor(props) {
     super(props);
@@ -11,38 +17,32 @@ class MoviesDisplay extends Component {
 
     const { display } = this.props;
 
-    const genreJSX = <div>{display}</div>;
-    const aToZJSX = <div>{display}</div>;
-    const directorJSX = <div>{display}</div>;
-    const ratingJSX = <div>{display}</div>;
-    const uploadJSX = <div>{display}</div>;
-
-    let renderedJSX = null;
+    let renderedView = null;
 
     switch (display) {
       case 'GENRE':
-        renderedJSX = genreJSX;
+        renderedView = <GenreView />;
         break;
       case 'A-Z':
-        renderedJSX = aToZJSX;
+        renderedView = <AlphabeticalView />;
         break;
       case 'DIRECTOR':
-        renderedJSX = directorJSX;
+        renderedView = <DirectorView />;
         break;
       case 'RATING':
-        renderedJSX = ratingJSX;
+        renderedView = <RatingView />;
         break;
       case 'UPLOAD':
-        renderedJSX = genreJSX;
+        renderedView = <UploadView />;
         break;
       default:
-        renderedJSX = uploadJSX;
+        renderedView = <GenreView />;
 
     }
 
     return (
       <section>
-        {renderedJSX}
+        {renderedView}
       </section>
     );
   }
