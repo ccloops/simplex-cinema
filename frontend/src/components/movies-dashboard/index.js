@@ -1,7 +1,7 @@
 import './_movies-dashboard.scss';
 import React, { Component } from 'react';
-import MoviesNav from '../movies-nav';
-import Movies from '../movies';
+import SidebarNav from '../sidebar-nav';
+import MoviesDisplay from '../movies-display';
 
 class MoviesDashboard extends Component {
   constructor(props) {
@@ -11,8 +11,8 @@ class MoviesDashboard extends Component {
   render() {
     return (
       <main className='movies-dashboard'>
-        <MoviesNav />
-        <Movies />
+        <SidebarNav />
+        <MoviesDisplay />
       </main>
     );
   }

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import token from './token';
-import movieCategory from './movie-category';
+import display from './change-display';
 
 export default combineReducers({
   token,
-  movieCategory,
+  display,
 });

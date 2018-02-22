@@ -12,7 +12,7 @@ import reporter from './lib/redux-reporter';
 import thunk from './lib/redux-thunk';
 
 const initialState = {
-  movieCategory: 'GENRE',
+  display: 'GENRE',
 };
 
 const store = createStore(reducer, initialState, composeWithDevTools(

@@ -1,6 +1,6 @@
 export default (state = {}, { type, payload }) => {
   switch(type) {
-    case 'TOGGLE_CATEGORY':
+    case 'CHANGE_DISPLAY':
       return payload;
     default:
       return state;
