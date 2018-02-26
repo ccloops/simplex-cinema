@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import GenreView from '../genre-view';
 import AlphabeticalView from '../alphabetical-view';
-import DirectorView from '../director-view';
 import RatingView from '../rating-view';
 import UploadView from '../upload-view';
 
@@ -25,9 +24,6 @@ class MoviesDisplay extends Component {
         break;
       case 'A-Z':
         renderedView = <AlphabeticalView />;
-        break;
-      case 'DIRECTOR':
-        renderedView = <DirectorView />;
         break;
       case 'RATING':
         renderedView = <RatingView />;

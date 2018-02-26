@@ -19,10 +19,6 @@ const DisplayCategories = ({ handleChangeDisplay }) => {
         A - Z
       </button>
 
-      <button name='DIRECTOR' onClick={handleUpdate}>
-        Director
-      </button>
-
       <button name='RATING' onClick={handleUpdate}>
         Rating
       </button>
