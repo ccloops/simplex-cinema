@@ -1,5 +1,23 @@
 'use strict';
 
+import AWS from 'aws-sdk';
+import fs from 'fs-extra';
+
+const s3 = new AWS.S3();
+
+export const removeMulterFile = data => fs.remove(data.path);
+export const removeMulterFiles = list => Promise.all(list.map(removeMulterFile));
+
+export const s3UploadFile = data => {
+  return s3.upload({
+    ACL: 'public-read',
+    Bucket: process.env.AWS_BUCKET,
+    Key: `${data.filename}.${data.originalname}`,
+    Body: data.posterBlob,
+  }).promise()
+    .catch(err => { throw err; });
+};
+
 export const promisify = fn => {
   return (...args) => {
     return new Promise((resolve, reject) => {
