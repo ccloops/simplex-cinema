@@ -13,7 +13,7 @@ export const s3UploadFile = data => {
     ACL: 'public-read',
     Bucket: process.env.AWS_BUCKET,
     Key: `${data.filename}.${data.originalname}`,
-    Body: data.posterBlob,
+    Body: fs.createReadStream(data.path),
   }).promise()
     .catch(err => { throw err; });
 };

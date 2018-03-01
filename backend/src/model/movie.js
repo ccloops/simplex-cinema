@@ -1,3 +1,5 @@
+'use strict';
+
 import mongoose, { Schema } from 'mongoose';
 import httpError from 'http-errors';
 import * as util from '../lib/util';

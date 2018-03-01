@@ -2,10 +2,10 @@
 
 import * as db from './db';
 import express from 'express';
-import bodyParser from 'body-parser';
 import fs from 'fs-extra';
 import cors from 'cors';
 import routes from '../route';
+import parserBody from '../middleware/parser-body';
 
 import { log } from './logger';
 
@@ -16,8 +16,8 @@ const state = {
 
 const app = express();
 
-// Global bodyParser
-app.use(bodyParser.json());
+// Global parsing
+app.use(parserBody);
 
 // open cors
 app.use(cors({
