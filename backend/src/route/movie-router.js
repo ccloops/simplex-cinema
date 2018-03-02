@@ -3,9 +3,10 @@
 import { Router } from 'express';
 import Movie from '../model/movie';
 import { bearerAuth } from '../middleware/auth-middleware';
+import parserBody from '../middleware/parser-body';
 
 export default new Router()
-  .post('/movies', bearerAuth, (request, response, next) => {
+  .post('/movies', bearerAuth, parserBody, (request, response, next) => {
     return Movie.create(request)
       .then(response.json)
       .catch(next);

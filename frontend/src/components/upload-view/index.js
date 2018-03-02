@@ -17,12 +17,24 @@ class UploadView extends Component {
   }
 
   handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { type, name, value, files } = event.target;
+    if (type === 'file') {
+      // const error = this.handleValidate(event.target);
+      fileToDataURL(files[0])
+        .then(preview => this.setState({ preview }));
+    } else {
+      this.setState({ [name]: value });
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
+    this.props.onComplete(this.state);
+    this.setState({
+      title: '',
+      genre: '',
+      rating: '',
+    });
   }
 
   render() {
@@ -74,5 +86,20 @@ class UploadView extends Component {
     );
   }
 }
+
+const fileToDataURL = file => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      return reject(new Error('file required'));
+    }
+
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => resolve(reader.result));
+    reader.addEventListener('error', reject);
+
+    return reader.readAsDataURL(file);
+  });
+};
 
 export default UploadView;

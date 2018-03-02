@@ -4,11 +4,12 @@ import { Router } from 'express';
 import Account from '../model/account';
 import Profile from '../model/profile';
 import { basicAuth } from '../middleware/auth-middleware';
+import parserBody from '../middleware/parser-body';
 
 let tempAccount = null;
 
 export default new Router()
-  .post('/signup', (request, response, next) => {
+  .post('/signup', parserBody, (request, response, next) => {
     return Account.create(request.body)
       .then(account => {
         tempAccount = account;

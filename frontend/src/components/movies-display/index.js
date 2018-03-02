@@ -5,6 +5,7 @@ import GenreView from '../genre-view';
 import AlphabeticalView from '../alphabetical-view';
 import RatingView from '../rating-view';
 import UploadView from '../upload-view';
+import { createActionRequest } from '../../action/client-movies';
 
 class MoviesDisplay extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class MoviesDisplay extends Component {
         renderedView = <RatingView />;
         break;
       case 'UPLOAD':
-        renderedView = <UploadView />;
+        renderedView = <UploadView onComplete={this.props.createMovie}/>;
         break;
       default:
         renderedView = <GenreView />;
@@ -48,4 +49,8 @@ const mapStateToProps = state => ({
   display: state.display,
 });
 
-export default connect(mapStateToProps, null)(MoviesDisplay);
+const mapDispatchToProps = dispatch => ({
+  createMovie: movie => dispatch(createActionRequest(movie)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesDisplay);
