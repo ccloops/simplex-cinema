@@ -41,13 +41,15 @@ Movie.validateRequest = function(request) {
     return Promise.reject(httpError(400, '__VALIDATION_ERROR__: must have a file'));
   }
 
-  if (request.files.length > 1) {
-    return Promise.reject(httpError(400, '__VALIDATION_ERROR__: must have one file'));
+  if (request.files.length > 2) {
+    return Promise.reject(httpError(400, '__VALIDATION_ERROR__: must have no more than two files'));
   }
 
   const [ file ] = request.files;
+  console.log('FILE ===>', file);
+  console.log('FILES ===>', request.files);
   if (file) {
-    if (file.fieldName !== 'movie') {
+    if (file.fieldname !== 'movie') {
       return Promise.reject(httpError(400, '__VALIDATION_ERROR__: file must be on field movie'));
     }
   }
@@ -62,7 +64,7 @@ Movie.create = function(request) {
         .then(s3Data => {
           return new Movie({
             account: request.account._id,
-            profile: request.user._id,
+            profile: request.account.profile,
             posterURL: s3Data.Location,
             title: request.body.title,
             genre: request.body.genre,

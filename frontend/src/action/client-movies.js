@@ -8,7 +8,7 @@ export const createAction = movie => ({
 
 export const createActionRequest = movie => store => {
   const { token } = store.getState();
-  console.log('MOVIE');
+  console.log('MOVIE', movie);
 
   return superagent.post(`${__API_URL__}${routes.MOVIES_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -16,6 +16,7 @@ export const createActionRequest = movie => store => {
     .field('rating', movie.rating)
     .field('title', movie.title)
     .attach('movie', movie.movie)
+    .attach('poster', movie.poster)
     .withCredentials()
     .then(response => {
       return store.dispatch(createAction(response.body));

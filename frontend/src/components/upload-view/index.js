@@ -20,8 +20,14 @@ class UploadView extends Component {
     const { type, name, value, files } = event.target;
     if (type === 'file') {
       // const error = this.handleValidate(event.target);
-      fileToDataURL(files[0])
-        .then(preview => this.setState({ preview }));
+      if (name === 'poster') {
+        fileToDataURL(files[0])
+          .then(posterPreview => this.setState({ posterPreview }));
+      }
+
+      this.setState({
+        [name]: files[0],
+      });
     } else {
       this.setState({ [name]: value });
     }

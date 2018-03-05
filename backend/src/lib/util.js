@@ -9,6 +9,7 @@ export const removeMulterFile = data => fs.remove(data.path);
 export const removeMulterFiles = list => Promise.all(list.map(removeMulterFile));
 
 export const s3UploadFile = data => {
+  console.log('S3 UPLOAD ====>', data);
   return s3.upload({
     ACL: 'public-read',
     Bucket: process.env.AWS_BUCKET,

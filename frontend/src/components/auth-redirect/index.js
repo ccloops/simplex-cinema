@@ -14,11 +14,11 @@ const AuthRedirect = ({ location, history, token }) => {
       destinationRoute = routes.DASHBOARD_ROUTE;
     }
   } else {
-    destinationRoute = routes.DASHBOARD_ROUTE;
-    // !!! uncomment later
-    // if (!token) {
-    //   destinationRoute = routes.ROOT_ROUTE;
-    // }
+    // destinationRoute = routes.DASHBOARD_ROUTE;
+    //!!! comment later
+    if (!token) {
+      destinationRoute = routes.ROOT_ROUTE;
+    }
   }
 
   return (
