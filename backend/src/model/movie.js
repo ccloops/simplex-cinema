@@ -33,7 +33,6 @@ const movieSchema = new Schema({
 const Movie = module.exports = mongoose.model('movie', movieSchema);
 
 Movie.validateRequest = function(request) {
-  console.log('test');
   if (request.method === 'POST' && !request.files) {
     return Promise.reject(httpError(400, '__VALIDATION_ERROR__: must have a file'));
   }

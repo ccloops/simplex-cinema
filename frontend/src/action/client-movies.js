@@ -8,7 +8,7 @@ export const createAction = movie => ({
 
 export const createActionRequest = movie => store => {
   const { token } = store.getState();
-  console.log(movie);
+  console.log('MOVIE');
 
   return superagent.post(`${__API_URL__}${routes.MOVIES_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
