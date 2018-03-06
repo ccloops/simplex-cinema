@@ -26,7 +26,6 @@ const movieSchema = new Schema({
   account: {
     type: Schema.Types.ObjectId,
     required: true,
-    unique: true,
   },
 });
 
@@ -46,26 +45,27 @@ Movie.validateRequest = function(request) {
   }
 
   const [ file ] = request.files;
-  console.log('FILE ===>', file);
-  console.log('FILES ===>', request.files);
+
   if (file) {
     if (file.fieldname !== 'movie') {
       return Promise.reject(httpError(400, '__VALIDATION_ERROR__: file must be on field movie'));
     }
   }
 
-  return Promise.resolve(file);
+  return Promise.resolve(request.files);
 };
 
 Movie.create = function(request) {
   return Movie.validateRequest(request)
-    .then(file => {
-      return util.s3UploadFile(file)
+    .then(files => {
+      return util.s3UploadFile(files)
         .then(s3Data => {
+          console.log('does it make it here?', s3Data);
           return new Movie({
             account: request.account._id,
             profile: request.account.profile,
-            posterURL: s3Data.Location,
+            movieURL: s3Data[0].Location,
+            posterURL: s3Data[1].Location,
             title: request.body.title,
             genre: request.body.genre,
             rating: request.body.rating,

@@ -9,14 +9,37 @@ export const removeMulterFile = data => fs.remove(data.path);
 export const removeMulterFiles = list => Promise.all(list.map(removeMulterFile));
 
 export const s3UploadFile = data => {
-  console.log('S3 UPLOAD ====>', data);
-  return s3.upload({
-    ACL: 'public-read',
-    Bucket: process.env.AWS_BUCKET,
-    Key: `${data.filename}.${data.originalname}`,
-    Body: fs.createReadStream(data.path),
-  }).promise()
-    .catch(err => { throw err; });
+  console.log('S3 UPLOAD ====>', data[0]);
+
+  const movieUpload = () => {
+    return s3.upload({
+      ACL: 'public-read',
+      Bucket: process.env.AWS_BUCKET,
+      Key: `${data[0].filename}.${data[0].originalname}`,
+      Body: fs.createReadStream(data[0].path),
+    }).promise()
+      .catch(err => { throw err; });
+  };
+
+  const posterUpload = () =>  {
+    return s3.upload({
+      ACL: 'public-read',
+      Bucket: process.env.AWS_BUCKET,
+      Key: `${data[1].filename}.${data[1].originalname}`,
+      Body: fs.createReadStream(data[1].path),
+    }).promise()
+      .catch(err => { throw err; });
+  };
+
+  return Promise.all([movieUpload(), posterUpload()])
+    .then(results => {
+      console.log('RESULTS', results);
+      return results;
+    })
+    .catch(err => {
+      console.log('errorrrr!!!!!!!');
+      throw err;
+    });
 };
 
 export const promisify = fn => {

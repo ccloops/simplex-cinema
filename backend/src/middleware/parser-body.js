@@ -5,7 +5,6 @@ import httpError from 'http-errors';
 const upload = multer({ dest: `${__dirname}/../../temp`});
 
 export default (request, response, next) => {
-  console.log(request.headers);
   const contentType = request.headers['content-type'];
 
   if (contentType.indexOf('application/json') > -1) {
