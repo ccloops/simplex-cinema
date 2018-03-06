@@ -32,14 +32,8 @@ export const s3UploadFile = data => {
   };
 
   return Promise.all([movieUpload(), posterUpload()])
-    .then(results => {
-      console.log('RESULTS', results);
-      return results;
-    })
-    .catch(err => {
-      console.log('errorrrr!!!!!!!');
-      throw err;
-    });
+    .then(s3Data => removeMulterFiles(data).then(() => s3Data))
+    .catch(err => removeMulterFiles(data).then(() => { throw err; }));
 };
 
 export const promisify = fn => {

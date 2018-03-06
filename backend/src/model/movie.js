@@ -32,7 +32,7 @@ const movieSchema = new Schema({
   },
 });
 
-const Movie = module.exports = mongoose.model('movie', movieSchema);
+const Movie = mongoose.model('movie', movieSchema);
 
 Movie.validateRequest = function(request) {
   if (request.method === 'POST' && !request.files) {
@@ -44,15 +44,21 @@ Movie.validateRequest = function(request) {
   }
 
   if (request.files.length > 2) {
-    return Promise.reject(httpError(400, '__VALIDATION_ERROR__: must have no more than two files'));
+    const err = httpError(400, '__VALIDATION_ERROR__: must have no more than two files');
+    return util.removeMulterFiles(request.files)
+      .then(() => { throw err; });
   }
 
-  const [ file ] = request.files;
+  const [ movie, poster ] = request.files;
 
-  if (file) {
-    if (file.fieldname !== 'movie') {
-      return Promise.reject(httpError(400, '__VALIDATION_ERROR__: file must be on field movie'));
-    }
+  if (movie.fieldname !== 'movie') {
+    const err = httpError(400, '__VALIDATION_ERROR__: file must be on field movie');
+    return util.removeMulterFiles(request.files)
+      .then(() => { throw err; });
+  }
+
+  if (!poster) {
+    console.log('POSTER !!!', poster);
   }
 
   return Promise.resolve(request.files);
@@ -80,3 +86,5 @@ Movie.create = function(request) {
         .populate('profile');
     });
 };
+
+export default Movie;
