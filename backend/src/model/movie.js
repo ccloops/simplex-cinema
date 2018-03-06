@@ -8,6 +8,9 @@ const movieSchema = new Schema({
   posterURL: {
     type: String,
   },
+  movieURL: {
+    type: String,
+  },
   title: {
     type: String,
     required: true,
