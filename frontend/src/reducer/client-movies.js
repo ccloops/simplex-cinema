@@ -6,7 +6,7 @@ export const validateMovie = movie => {
 
 export default (state = [], { type, payload }) => {
   switch(type) {
-    case 'CLIENT_PHOTO_CREATE':
+    case 'CLIENT_MOVIE_CREATE':
       validateMovie(payload);
       return [payload, ...state];
     default:

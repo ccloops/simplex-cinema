@@ -10,4 +10,9 @@ export default new Router()
     return Movie.create(request)
       .then(response.json)
       .catch(next);
+  })
+  .get('/movies', (request, response, next) => {
+    return Movie.fetch(request)
+      .then(response.page)
+      .catch(next);
   });

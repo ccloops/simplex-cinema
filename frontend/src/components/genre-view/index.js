@@ -1,9 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const genreView = () => {
+const GenreView = ({ movies }) => {
   return (
-    <div>Genres</div>
+    <div>
+      Genres
+      {movies.map(movie => {
+        console.log(movie);
+        <img src={movie.movieURL} />;
+      })}
+    </div>
   );
 };
 
-export default genreView;
+const mapStateToProps = state => ({
+  movies: state.clientMovies,
+});
+
+export default connect(mapStateToProps, null)(GenreView);

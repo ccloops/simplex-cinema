@@ -87,4 +87,6 @@ Movie.create = function(request) {
     });
 };
 
+Movie.fetch = util.pagerCreate(Movie, '');
+
 export default Movie;
