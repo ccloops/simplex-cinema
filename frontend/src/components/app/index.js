@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import Landing from '../landing';
 import Dashboard from '../dashboard';
+import WatchMovie from '../watch-movie';
 import AuthRedirect from '../auth-redirect';
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
           <Route exact path='/' component={ Landing } />
           <Route exact path='/signup' component={ Landing } />
           <Route exact path='/login' component={ Landing } />
+          <Route exact path='/movie/:movieId' component={ WatchMovie } />
           <Route exact path='/dashboard' component={ Dashboard } />
         </Fragment>
       </BrowserRouter>

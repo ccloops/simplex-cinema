@@ -89,4 +89,14 @@ Movie.create = function(request) {
 
 Movie.fetch = util.pagerCreate(Movie, '');
 
+Movie.fetchOne = function(request) {
+  return Movie.findById(request.params.id)
+    .then(movie => {
+      if (!movie) {
+        throw httpError(404, '__NOT_FOUND__: movie not found');
+      }
+      return movie;
+    });
+};
+
 export default Movie;

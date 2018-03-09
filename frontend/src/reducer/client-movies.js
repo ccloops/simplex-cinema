@@ -9,6 +9,8 @@ export default (state = [], { type, payload }) => {
     case 'CLIENT_MOVIE_CREATE':
       validateMovie(payload);
       return [payload, ...state];
+    case 'CLIENT_MOVIE_GET':
+      return payload;
     default:
       return state;
   }

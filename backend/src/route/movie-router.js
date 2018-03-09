@@ -15,4 +15,9 @@ export default new Router()
     return Movie.fetch(request)
       .then(response.page)
       .catch(next);
+  })
+  .get('/movies/:id', (request, response, next) => {
+    return Movie.fetchOne(request)
+      .then(response.json)
+      .catch(next);
   });

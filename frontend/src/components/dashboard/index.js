@@ -1,16 +1,16 @@
 import './_dashboard.scss';
 import React from 'react';
 import superagent from 'superagent';
+import { connect } from 'react-redux';
 
 import HeaderBar from '../header-bar';
 import * as routes from '../../routes';
 import MoviesDashboard from '../movies-dashboard';
+import { getActionRequest } from '../../action/client-movies';
 
 class Dashboard extends React.Component {
   componentWillMount() {
-    return superagent.get(`${__API_URL__}${routes.MOVIES_ROUTE}`)
-      .then(response => response.body.data)
-      .then(console.log);
+    this.props.setMoviesToStore();
   }
 
   render() {
@@ -23,4 +23,12 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({
+  movies: state.clientMovies,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setMoviesToStore: movies => dispatch(getActionRequest(movies)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -1,6 +1,11 @@
 import superagent from 'superagent';
 import * as routes from '../routes';
 
+export const getAction = movies => ({
+  type: 'CLIENT_MOVIE_GET',
+  payload: movies,
+});
+
 export const createAction = movie => ({
   type: 'CLIENT_MOVIE_CREATE',
   payload: movie,
@@ -8,7 +13,6 @@ export const createAction = movie => ({
 
 export const createActionRequest = movie => store => {
   const { token } = store.getState();
-  console.log('MOVIE', movie);
 
   return superagent.post(`${__API_URL__}${routes.MOVIES_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -20,5 +24,12 @@ export const createActionRequest = movie => store => {
     .withCredentials()
     .then(response => {
       return store.dispatch(createAction(response.body));
+    });
+};
+
+export const getActionRequest = movie => store => {
+  return superagent.get(`${__API_URL__}${routes.MOVIES_ROUTE}`)
+    .then(response => {
+      return store.dispatch(getAction(response.body.data));
     });
 };
