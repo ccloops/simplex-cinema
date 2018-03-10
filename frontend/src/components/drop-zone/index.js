@@ -1,10 +1,11 @@
 import './_drop-zone.scss';
 import React from 'react';
 import { connect } from 'react-redux';
+import dragDrop from 'drag-drop';
 
 import { createActionRequest } from '../../action/client-movies';
 
-const DropZone = ({ createMovie }) => {
+const DropZone = ({ createMovie, onChange }) => {
 
   const handleDragOver = event => {
     event.preventDefault();
@@ -12,13 +13,20 @@ const DropZone = ({ createMovie }) => {
 
   const handleDrop = event => {
     event.preventDefault();
+    event.persist();
     event.stopPropagation();
 
-    console.log(event.dataTransfer);
-
     try {
-      let dragData = JSON.parse(event.dataTransfer.getData('application/json'));
-      this.props.createMovie(dragData);
+      dragDrop('.drop-zone', {
+        onDrop: files => {
+          if (files.type )
+          const event = {};
+          event.target = {
+            name: ''
+          }
+          onChange(files[0]);
+        },
+      });
     } catch (error) {
       console.log('__BAD_DRAG_DATA__', error);
     }

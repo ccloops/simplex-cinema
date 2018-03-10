@@ -17,6 +17,9 @@ class UploadView extends Component {
   }
 
   handleChange(event) {
+    if (event) {
+      console.log(event);
+    }
     const { type, name, value, files } = event.target;
     if (type === 'file') {
       // const error = this.handleValidate(event.target);
@@ -47,7 +50,7 @@ class UploadView extends Component {
     return (
       <div className='upload-view'>
         <h1>Upload</h1>
-        <DropZone />
+        <DropZone onChange={this.handleChange}/>
         <form className='movie-form' onSubmit={this.handleSubmit}>
           <label>Movie</label>
           <input
