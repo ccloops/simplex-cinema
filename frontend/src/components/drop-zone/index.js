@@ -1,7 +1,9 @@
 import './_drop-zone.scss';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+
 import dragDrop from 'drag-drop';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import FaUpload from 'react-icons/lib/fa/upload';
 
 import { createActionRequest } from '../../action/client-movies';
 
@@ -24,6 +26,8 @@ class DropZone extends Component {
         className='drop-zone'
         onDragOver={this.props.handleDragOver}
       >
+        <p>Click Here or Drag and Drop</p>
+        <FaUpload className='fa-upload'/>
       </div>
     );
   }

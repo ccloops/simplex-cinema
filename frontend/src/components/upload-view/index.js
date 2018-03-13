@@ -112,12 +112,6 @@ class UploadView extends Component {
         <h1>Upload</h1>
         <DropZone handleDrop={this.handleDrop}/>
         <form className='movie-form' onSubmit={this.handleSubmit}>
-          <label>Movie</label>
-          <input
-            type= 'file'
-            name='movie'
-            onChange={this.handleChange}
-          />
           <input
             type='text'
             name='title'
@@ -143,10 +137,19 @@ class UploadView extends Component {
             className='populated-field'
           />
           <label>Poster Art</label>
+          <React.Fragment></React.Fragment>
           <input
             type='file'
             name='poster'
             onChange={this.handleChange}
+            className='file-field poster'
+          />
+          <label>Movie</label>
+          <input
+            type= 'file'
+            name='movie'
+            onChange={this.handleChange}
+            className='file-field movie'
           />
           <br />
           <button type='submit'>Upload Movie</button>

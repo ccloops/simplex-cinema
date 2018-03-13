@@ -1,5 +1,13 @@
+@import "vars";
+
 .drop-zone {
   width: 400px;
   height: 200px;
   border: solid 1px black;
+  font: $
+
+  .fa-upload {
+    width: 3em;
+    height: auto;
+  }
 }
