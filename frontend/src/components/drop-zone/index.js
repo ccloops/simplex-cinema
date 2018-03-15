@@ -26,8 +26,8 @@ class DropZone extends Component {
         className='drop-zone'
         onDragOver={this.props.handleDragOver}
       >
-        <p>Click Here or Drag and Drop</p>
         <FaUpload className='fa-upload'/>
+        <p>Choose a movie or drag and drop it here</p>
       </div>
     );
   }

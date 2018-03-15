@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import App from './components/app';
 import reducer from './reducer';
+import main from './api';
 
 import reporter from './lib/redux-reporter';
 import thunk from './lib/redux-thunk';

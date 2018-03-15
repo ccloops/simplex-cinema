@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 import { getFileType, isVideo, isImage } from '../../lib/util';
 import DropZone from '../drop-zone';
+import { SEARCH_BY_TITLE } from '../../api';
 
 class UploadView extends Component {
   constructor(props) {
@@ -33,7 +34,13 @@ class UploadView extends Component {
         [name]: files[0],
       });
     } else {
-      this.setState({ [name]: value });
+      if (name === 'title') {
+        this.setState({ title: value }, () => {
+          return SEARCH_BY_TITLE(this.state.title);
+        });
+      } else {
+        this.setState({ [name]: value });
+      }
     }
   }
 
