@@ -11,6 +11,20 @@
     padding: 0.2em;
   }
 
+  .autocomplete-item {
+    background: white;
+  }
+
+  .autocomplete-image {
+    width: 5em;
+    height: auto;
+  }
+
+  .autocomplete-item:hover {
+    background: #eee;
+    cursor: pointer;
+  }
+
   .upload-font {
     color: black;
     font-size: 10px;

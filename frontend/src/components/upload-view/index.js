@@ -1,9 +1,11 @@
 import './_upload-view.scss';
 import React, { Component } from 'react';
+import Autocomplete from 'react-autocomplete';
 
 import { getFileType, isVideo, isImage } from '../../lib/util';
-import DropZone from '../drop-zone';
 import { SEARCH_BY_TITLE } from '../../api';
+
+import DropZone from '../drop-zone';
 
 class UploadView extends Component {
   constructor(props) {
@@ -13,15 +15,27 @@ class UploadView extends Component {
       title: '',
       genre: '',
       rating: '',
+      searchResults: [],
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.validateDrop = this.validateDrop.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.parseResults = this.parseResults.bind(this);
+    this.handleAutoComplete = this.handleAutoComplete.bind(this);
+  }
+
+  parseResults(searchResults) {
+    console.log(searchResults);
+    const posterURL = 'https://image.tmdb.org/t/p/w92';
+    return searchResults.map((result, i) => {
+      return { id: i, label: result.original_title, posterPath: `${posterURL}/${result.poster_path}` };
+    });
   }
 
   handleChange(event) {
+    console.log(event.target);
     const { type, name, value, files } = event.target;
     if (type === 'file') {
       // for poster art preview in browser
@@ -34,14 +48,16 @@ class UploadView extends Component {
         [name]: files[0],
       });
     } else {
-      if (name === 'title') {
-        this.setState({ title: value }, () => {
-          return SEARCH_BY_TITLE(this.state.title);
-        });
-      } else {
-        this.setState({ [name]: value });
-      }
+      this.setState({ [name]: value });
     }
+  }
+
+  handleAutoComplete(event) {
+    this.setState({ title: event.target.value }, () => {
+      return SEARCH_BY_TITLE(this.state.title)
+        .then(this.parseResults)
+        .then(searchResults => this.setState({ searchResults }));
+    });
   }
 
   validateDrop(files) {
@@ -119,13 +135,33 @@ class UploadView extends Component {
         <h1>Upload</h1>
         <DropZone handleDrop={this.handleDrop}/>
         <form className='movie-form' onSubmit={this.handleSubmit}>
-          <input
-            type='text'
-            name='title'
+          <Autocomplete
             value={this.state.title}
             placeholder='title'
-            onChange={this.handleChange}
-            className='populated-field'
+            onChange={this.handleAutoComplete}
+            items={this.state.searchResults}
+            getItemValue={item => item.label}
+            renderItem={(item, highlighted) =>
+              <div key={item.id} className='autocomplete-item'>
+                <img src={item.posterPath} className='autocomplete-image'/>
+                {item.label}
+              </div>
+            }
+            renderInput={props => <input {...props} className='populated-field'/> }
+            menuStyle={
+              {
+                borderRadius: '3px',
+                boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                background: 'rgba(255, 255, 255, 0.9)',
+                padding: '2px 0',
+                fontSize: '90%',
+                position: 'fixed',
+                overflow: 'auto',
+                maxHeight: '50%',
+                width: '25%',
+              }
+            }
+            onSelect={value => this.setState({ title: value })}
           />
           <input
             type='text'
