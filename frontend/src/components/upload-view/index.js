@@ -4,6 +4,7 @@ import Autocomplete from 'react-autocomplete';
 
 import { getFileType, isVideo, isImage } from '../../lib/util';
 import { SEARCH_BY_TITLE } from '../../api';
+import { menuStyling } from './menu-styling';
 
 import DropZone from '../drop-zone';
 
@@ -30,7 +31,13 @@ class UploadView extends Component {
     console.log(searchResults);
     const posterURL = 'https://image.tmdb.org/t/p/w92';
     return searchResults.map((result, i) => {
-      return { id: i, label: result.original_title, posterPath: `${posterURL}/${result.poster_path}` };
+      return {
+        id: i,
+        label: result.original_title,
+        posterPath: `${posterURL}/${result.poster_path}`,
+        rating: result.popularity,
+        releaseDate: result.release_date,
+      };
     });
   }
 
@@ -61,62 +68,17 @@ class UploadView extends Component {
   }
 
   validateDrop(files) {
-    console.log(files);
-    console.log(files[0] instanceof File);
-    const type1 = getFileType(files[0]);
-    const type2 = getFileType(files[1]);
-
-    if (files.length > 2) {
-      return;
-    }
-
-    // 1 image and 1 video
-    if (files.length === 2) {
-      if (isVideo(type1) && isVideo(type2)) {
-        return;
-      }
-
-      if (isImage(type1) && isImage(type2)) {
-        return;
-      }
-
-      // arrange so that image is first, video is second
-      if (isImage(type1) && isVideo(type2)) {
-        return files;
-      }
-      if (isVideo(type1) && isImage(type2)) {
-        const arrangedFiles = [];
-        arrangedFiles[0] = files[1];
-        arrangedFiles[1] = files[0];
-        return arrangedFiles;
-      }
-
-      return;
-    }
-
-    // 1 image or 1 video
-    if (files.length === 1) {
+    if (files.length === 1 && files[0] instanceof File) {
       return files;
     }
   }
 
   handleDrop(files) {
     const validatedFiles = this.validateDrop(files);
-    if (validatedFiles.length === 2) {
-      console.log(validatedFiles);
-      this.setState({
-        poster: validatedFiles[0],
-        movie: validatedFiles[1],
-      });
-    } else {
-      const type = getFileType(files[0]);
-      if (isVideo(type)) {
 
-      }
-      if (isImage(type)) {
-
-      }
-    }
+    this.setState({
+      movie: validatedFiles[0],
+    });
   }
 
   handleSubmit(event) {
@@ -130,6 +92,20 @@ class UploadView extends Component {
   }
 
   render() {
+
+    const renderItem = (item, highlighted) =>
+      <div key={item.id} className='autocomplete-item'>
+        <img src={item.posterPath} className='autocomplete-image'/>
+        {item.label}
+      </div>;
+
+    const renderInput = props =>
+      <input
+        {...props}
+        className='populated-field'
+        placeholder='title'
+      />;
+
     return (
       <div className='upload-view'>
         <h1>Upload</h1>
@@ -137,31 +113,15 @@ class UploadView extends Component {
         <form className='movie-form' onSubmit={this.handleSubmit}>
           <Autocomplete
             value={this.state.title}
-            placeholder='title'
             onChange={this.handleAutoComplete}
             items={this.state.searchResults}
             getItemValue={item => item.label}
-            renderItem={(item, highlighted) =>
-              <div key={item.id} className='autocomplete-item'>
-                <img src={item.posterPath} className='autocomplete-image'/>
-                {item.label}
-              </div>
-            }
-            renderInput={props => <input {...props} className='populated-field'/> }
-            menuStyle={
-              {
-                borderRadius: '3px',
-                boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                background: 'rgba(255, 255, 255, 0.9)',
-                padding: '2px 0',
-                fontSize: '90%',
-                position: 'fixed',
-                overflow: 'auto',
-                maxHeight: '50%',
-                width: '25%',
-              }
-            }
-            onSelect={value => this.setState({ title: value })}
+            renderItem={ renderItem }
+            renderInput={ renderInput }
+            menuStyle={ menuStyling }
+            onSelect={value => {
+              return this.setState({ title: value });
+            }}
           />
           <input
             type='text'
@@ -193,6 +153,7 @@ class UploadView extends Component {
             name='movie'
             onChange={this.handleChange}
             className='file-field movie'
+            title=' '
           />
           <br />
           <button type='submit'>Upload Movie</button>
