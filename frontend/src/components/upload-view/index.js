@@ -7,6 +7,7 @@ import { SEARCH_BY_TITLE } from '../../api';
 import { menuStyling } from './menu-styling';
 
 import DropZone from '../drop-zone';
+import ProgressBar from '../progress-bar';
 
 class UploadView extends Component {
   constructor(props) {
@@ -110,6 +111,7 @@ class UploadView extends Component {
       <div className='upload-view'>
         <h1>Upload</h1>
         <DropZone handleDrop={this.handleDrop}/>
+        <ProgressBar />
         <form className='movie-form' onSubmit={this.handleSubmit}>
           <Autocomplete
             value={this.state.title}

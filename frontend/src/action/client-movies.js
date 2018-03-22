@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import * as routes from '../routes';
+import { progressAction } from './upload-progress';
 
 export const getAction = movies => ({
   type: 'CLIENT_MOVIE_GET',
@@ -23,6 +24,9 @@ export const createActionRequest = movie => store => {
     .field('title', movie.title)
     .attach('movie', movie.movie)
     .attach('poster', movie.poster)
+    .on('progress', event => {
+      return store.dispatch(progressAction(event.percent));
+    })
     .withCredentials()
     .then(response => {
       return store.dispatch(createAction(response.body));
