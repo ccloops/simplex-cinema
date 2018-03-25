@@ -9,6 +9,8 @@ import { menuStyling } from './menu-styling';
 import DropZone from '../drop-zone';
 import ProgressBar from '../progress-bar';
 
+import superagent from 'superagent';
+
 class UploadView extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,30 @@ class UploadView extends Component {
     this.handleDrop = this.handleDrop.bind(this);
     this.parseResults = this.parseResults.bind(this);
     this.handleAutoComplete = this.handleAutoComplete.bind(this);
+    this.test = this.test.bind(this);
+  }
+
+  test(event) {
+    event.preventDefault();
+
+    const { type, name, value, files } = event.target;
+
+    let postURL = null;
+    return superagent.post(`${__API_URL__}/presignedURL`)
+      .then(response => {
+        console.log(response);
+        return response.body.url;
+      })
+      .then(postURL => {
+        return superagent.post(postURL)
+          .field('genre', this.state.genre)
+          .field('rating', this.state.rating)
+          .field('title', this.state.title)
+          .attach('movie', this.state.movie)
+          .attach('poster', this.state.poster)
+          .then(console.log);
+      })
+      .catch(console.log);
   }
 
   parseResults(searchResults) {
@@ -112,7 +138,7 @@ class UploadView extends Component {
         <h1>Upload</h1>
         <DropZone handleDrop={this.handleDrop}/>
         <ProgressBar />
-        <form className='movie-form' onSubmit={this.handleSubmit}>
+        <form className='movie-form' onSubmit={this.test}>
           <Autocomplete
             value={this.state.title}
             onChange={this.handleAutoComplete}
@@ -164,6 +190,8 @@ class UploadView extends Component {
     );
   }
 }
+
+// <button type='button' onClick={this.test}>FETCH URL</button>
 
 const fileToDataURL = file => {
   return new Promise((resolve, reject) => {

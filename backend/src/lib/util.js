@@ -17,6 +17,7 @@ export const s3UploadFile = data => {
       Bucket: process.env.AWS_BUCKET,
       Key: `${data[0].filename}.${data[0].originalname}`,
       Body: fs.createReadStream(data[0].path),
+      Metadata: { test: 'test', cameron: '123' },
     }).promise()
       .catch(err => { throw err; });
   };
@@ -68,4 +69,22 @@ export const pagerCreate = (model, populate = '') => (req, query = {}) => {
           next: offset > -1 && remaining > itemLimit ? `${route}${offset + 2}` : null,
         }));
     });
+};
+
+export const getPresignedPost = () => {
+  return new Promise((resolve, reject) => {
+    const params = {
+      Bucket: process.env.AWS_BUCKET,
+      ACL: 'public-read',
+      Key:'test',
+    };
+
+    s3.getSignedUrl(params, (error, data) => {
+      if (error) {
+        reject(data);
+      } else {
+        resolve(data);
+      }
+    });
+  });
 };

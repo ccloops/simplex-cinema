@@ -5,6 +5,8 @@ import Movie from '../model/movie';
 import { bearerAuth } from '../middleware/auth-middleware';
 import parserBody from '../middleware/parser-body';
 
+import { getPresignedPost } from '../lib/util';
+
 export default new Router()
   .post('/movies', bearerAuth, parserBody, (request, response, next) => {
     return Movie.create(request)
@@ -18,6 +20,11 @@ export default new Router()
   })
   .get('/movies/:id', (request, response, next) => {
     return Movie.fetchOne(request)
+      .then(response.json)
+      .catch(next);
+  })
+  .get('/presignedURL', (request, response, next) => {
+    return getPresignedPost()
       .then(response.json)
       .catch(next);
   });

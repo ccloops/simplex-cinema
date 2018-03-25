@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { progressAction } from '../../action/client-movies';
 
 const ProgressBar = ({ uploadProgress }) => {
+  const bar = uploadProgress / 100;
+
   return (
     <div>{ uploadProgress }</div>
   );
