@@ -75,9 +75,9 @@ export const getPresignedPost = request => {
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      Key: 'this-is-test',
+      Key: 'this-is-test3',
       Expires: 3600,
-      ContentType: 'image/jpeg',
+      ContentType: 'application/octet-stream',
     };
 
     s3.getSignedUrl('putObject', params, (error, url) => {

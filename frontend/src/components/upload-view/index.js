@@ -45,9 +45,9 @@ class UploadView extends Component {
       .then(postURL => {
         console.log(postURL);
         return superagent.put(postURL)
-          .set('Content-Type', 'image/jpeg')
-          .send(this.state.poster)
-          .on('progress', e => console.log)
+          .set('Content-Type', 'application/octet-stream')
+          .send(this.state.movie)
+          .on('progress', e => console.log(e.percent))
           .then(console.log)
           .catch(console.log);
       })
