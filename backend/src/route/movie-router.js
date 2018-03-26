@@ -13,6 +13,11 @@ export default new Router()
       .then(response.json)
       .catch(next);
   })
+  .get('/presignedURL', (request, response, next) => {
+    return getPresignedPost(request)
+      .then(response.json)
+      .catch(next);
+  })
   .get('/movies', (request, response, next) => {
     return Movie.fetch(request)
       .then(response.page)
@@ -20,11 +25,6 @@ export default new Router()
   })
   .get('/movies/:id', (request, response, next) => {
     return Movie.fetchOne(request)
-      .then(response.json)
-      .catch(next);
-  })
-  .get('/presignedURL', (request, response, next) => {
-    return getPresignedPost()
       .then(response.json)
       .catch(next);
   });

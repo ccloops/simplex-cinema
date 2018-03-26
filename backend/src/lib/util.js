@@ -71,19 +71,20 @@ export const pagerCreate = (model, populate = '') => (req, query = {}) => {
     });
 };
 
-export const getPresignedPost = () => {
+export const getPresignedPost = request => {
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      ACL: 'public-read',
-      Key:'test',
+      Key: 'this-is-test',
+      Expires: 3600,
+      ContentType: 'image/jpeg',
     };
 
-    s3.getSignedUrl(params, (error, data) => {
+    s3.getSignedUrl('putObject', params, (error, url) => {
       if (error) {
-        reject(data);
+        reject(error);
       } else {
-        resolve(data);
+        resolve(url);
       }
     });
   });

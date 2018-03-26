@@ -37,19 +37,19 @@ class UploadView extends Component {
     const { type, name, value, files } = event.target;
 
     let postURL = null;
-    return superagent.post(`${__API_URL__}/presignedURL`)
+    return superagent.get(`${__API_URL__}/presignedURL`)
       .then(response => {
         console.log(response);
-        return response.body.url;
+        return response.body;
       })
       .then(postURL => {
-        return superagent.post(postURL)
-          .field('genre', this.state.genre)
-          .field('rating', this.state.rating)
-          .field('title', this.state.title)
-          .attach('movie', this.state.movie)
-          .attach('poster', this.state.poster)
-          .then(console.log);
+        console.log(postURL);
+        return superagent.put(postURL)
+          .set('Content-Type', 'image/jpeg')
+          .send(this.state.poster)
+          .on('progress', e => console.log)
+          .then(console.log)
+          .catch(console.log);
       })
       .catch(console.log);
   }
