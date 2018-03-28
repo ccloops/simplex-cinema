@@ -2,7 +2,6 @@
 
 import * as db from './db';
 import express from 'express';
-import bodyParser from 'body-parser';
 import fs from 'fs-extra';
 import cors from 'cors';
 import routes from '../route';
@@ -15,9 +14,6 @@ const state = {
 };
 
 const app = express();
-
-// Global bodyParser
-app.use(bodyParser.json());
 
 // open cors
 app.use(cors({

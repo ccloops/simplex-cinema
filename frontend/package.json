@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geo-jumper/frontend.git"
+    "url": "git+https://github.com/simplex-cinema/frontend.git"
   },
   "jest": {
     "moduleNameMapper": {
@@ -45,6 +45,7 @@
     "clean-webpack-plugin": "^0.1.18",
     "css-loader": "^0.28.9",
     "dotenv": "^5.0.0",
+    "drag-drop": "^2.13.2",
     "enzyme-to-json": "^3.3.1",
     "eslint-plugin-react": "^7.6.1",
     "express": "^4.16.2",
@@ -53,6 +54,7 @@
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
+    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.2.0",
     "react-icons": "^2.2.7",
     "react-redux": "^5.0.7",
@@ -66,6 +68,7 @@
     "superagent": "^3.8.2",
     "url-loader": "^0.6.2",
     "validator": "^9.4.0",
+    "video-react": "^0.9.4",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
   }

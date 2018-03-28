@@ -7,11 +7,16 @@ import { Provider } from 'react-redux';
 
 import App from './components/app';
 import reducer from './reducer';
+import main from './api';
 
 import reporter from './lib/redux-reporter';
 import thunk from './lib/redux-thunk';
 
-const store = createStore(reducer, composeWithDevTools(
+const initialState = {
+  display: 'GENRE',
+};
+
+const store = createStore(reducer, initialState, composeWithDevTools(
   applyMiddleware(thunk, reporter)
 ));
 

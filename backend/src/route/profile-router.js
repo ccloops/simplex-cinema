@@ -4,12 +4,16 @@ import { Router } from 'express';
 import httpError from 'http-errors';
 import Profile from '../model/profile';
 import { bearerAuth } from '../middleware/auth-middleware';
+import parserBody from '../middleware/parser-body';
 
 export default new Router()
-  .post('/profiles', bearerAuth, (request, response, next) => {
+  .post('/profiles', bearerAuth, parserBody, (request, response, next) => {
     Profile.create(request)
       .then(response.json)
       .catch(next);
+  })
+  .post('/update-profile-movies', (request, response, next) => {
+    return 'change me';
   })
   .get('/profiles', (request, response, next) => {
     Profile.fetch(request)
@@ -31,7 +35,7 @@ export default new Router()
       .then(response.json)
       .catch(next);
   })
-  .put('/profiles/:id', bearerAuth, (request, response, next) => {
+  .put('/profiles/:id', bearerAuth, parserBody, (request, response, next) => {
     Profile.update(request)
       .then(response.json)
       .catch(next);

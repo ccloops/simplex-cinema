@@ -17,6 +17,7 @@ const webPackConfig = module.exports = {};
 
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
+
 //------------------------------------------------------------
 webPackConfig.entry = `${__dirname}/src/main.js`;
 webPackConfig.output = {
@@ -30,8 +31,12 @@ webPackConfig.plugins = [
   new EnvironmentPlugin(['NODE_ENV']),
   new DefinePlugin({
     __API_URL__ : JSON.stringify(process.env.API_URL),
+    __TMDB_API_KEY__ : JSON.stringify(process.env.TMDB_API_KEY),
   }),
-  new ExtractTextPlugin('bundle.[hash].css'),
+  new ExtractTextPlugin({
+    disable: process.env.NODE_ENV !== 'production',
+    filename: 'bundle.[hash].css',
+  }),
 ];
 
 if(PRODUCTION) {
@@ -51,6 +56,7 @@ webPackConfig.module = {
     {
       test:  /\.scss$/,
       loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
         use: [
           'css-loader',
           'resolve-url-loader',

@@ -1,3 +1,4 @@
+import './_auth-form.scss';
 import React, { Component } from 'react';
 
 class AuthForm extends Component {

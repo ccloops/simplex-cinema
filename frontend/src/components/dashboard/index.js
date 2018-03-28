@@ -1,13 +1,34 @@
+import './_dashboard.scss';
 import React from 'react';
+import superagent from 'superagent';
+import { connect } from 'react-redux';
+
+import HeaderBar from '../header-bar';
+import * as routes from '../../routes';
+import MoviesDashboard from '../movies-dashboard';
+import { getActionRequest } from '../../action/client-movies';
 
 class Dashboard extends React.Component {
-  render(){
+  componentWillMount() {
+    this.props.setMoviesToStore();
+  }
+
+  render() {
     return (
       <div className='dashboard'>
-        <h1> Hello from Dashboard </h1>
+        <HeaderBar />
+        <MoviesDashboard />
       </div>
     );
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({
+  movies: state.clientMovies,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setMoviesToStore: movies => dispatch(getActionRequest(movies)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

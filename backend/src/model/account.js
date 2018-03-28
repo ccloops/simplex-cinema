@@ -26,6 +26,9 @@ const accountSchema = new Schema({
     type: String,
     unique: true,
   },
+  profile: {
+    type: Schema.Types.ObjectId,
+  },
 });
 
 // Instance Methods
@@ -71,4 +74,3 @@ Account.create = account => {
       return new Account(data).save();
     });
 };
-

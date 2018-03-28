@@ -25,6 +25,7 @@ Profile.create = function(request) {
   })
     .save()
     .then(profile => {
+      request.account.profile = profile._id;
       return request.account.save()
         .then(() => profile);
     });

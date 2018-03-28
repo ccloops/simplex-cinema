@@ -1,0 +1,48 @@
+@import "vars";
+
+.upload-view {
+  text-align: center;
+  margin: 1em auto;
+  width: 25%;
+
+  .populated-field {
+    border: 1px solid black;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0.2em;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .autocomplete-item {
+    background: white;
+  }
+
+  .autocomplete-image {
+    width: 5em;
+    height: auto;
+  }
+
+  .autocomplete-item:hover {
+    background: #eee;
+    cursor: pointer;
+  }
+
+  .upload-font {
+    color: black;
+    font-size: 10px;
+  }
+
+  input[type='file'] {
+    color: transparent;
+  }
+
+  button {
+    padding: 0.2em;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+}

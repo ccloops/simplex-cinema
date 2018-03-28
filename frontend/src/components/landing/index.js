@@ -1,3 +1,4 @@
+import './_landing.scss';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -36,30 +37,33 @@ class Landing extends Component {
     const { location } = this.props;
 
     let rootJSX =
-      <div>
-        <h2>Welcome</h2>
+      <section className='landing-content' id='welcome'>
+        <h1>Your movies, anywhere</h1>
         <Link to='/signup'>signup</Link>
         <Link to='/login'>login</Link>
-      </div>;
+      </section>;
 
     let signUpJSX =
-      <div>
+      <section className='landing-content' id='signup'>
+        <h1>Your movies, anywhere</h1>
         <h2>signup</h2>
         <AuthForm onComplete={this.handleSignup} />
         <p>already have an account?</p>
         <Link to='/login'>login</Link>
-      </div>;
+      </section>;
 
     let loginJSX =
-      <div>
+      <section className='landing-content' id='login'>
+        <h1>Your movies, anywhere</h1>
         <h2>login</h2>
         <AuthForm type='login' onComplete={this.handleLogin} />
         <p>Dont have an account?</p>
         <Link to='/signup'>signup</Link>
-      </div>;
+      </section>;
 
     return (
       <div className='landing'>
+        <figure className='logo'>Simplex</figure>
         {location.pathname === routes.ROOT_ROUTE ? rootJSX : undefined}
         {location.pathname === routes.SIGNUP_ROUTE ? signUpJSX : undefined}
         {location.pathname === routes.LOGIN_ROUTE ? loginJSX : undefined}
