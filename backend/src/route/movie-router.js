@@ -13,7 +13,7 @@ export default new Router()
       .then(response.json)
       .catch(next);
   })
-  .get('/presignedURL', (request, response, next) => {
+  .post('/presignedURL', bearerAuth, parserBody, (request, response, next) => {
     return getPresignedPost(request)
       .then(response.json)
       .catch(next);

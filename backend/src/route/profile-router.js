@@ -12,6 +12,9 @@ export default new Router()
       .then(response.json)
       .catch(next);
   })
+  .post('/update-profile-movies', (request, response, next) => {
+    return 'change me';
+  })
   .get('/profiles', (request, response, next) => {
     Profile.fetch(request)
       .then(response.page)

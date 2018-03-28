@@ -69,7 +69,6 @@ Movie.create = function(request) {
     .then(files => {
       return util.s3UploadFile(files)
         .then(s3Data => {
-          console.log('does it make it here?', s3Data);
           return new Movie({
             account: request.account._id,
             profile: request.account.profile,

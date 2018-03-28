@@ -72,10 +72,11 @@ export const pagerCreate = (model, populate = '') => (req, query = {}) => {
 };
 
 export const getPresignedPost = request => {
+  console.log(request.body);
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      Key: 'this-is-test3',
+      Key: request.body.key,
       Expires: 3600,
       ContentType: 'application/octet-stream',
     };

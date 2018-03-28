@@ -1,6 +1,7 @@
 import './_upload-view.scss';
 import React, { Component } from 'react';
 import Autocomplete from 'react-autocomplete';
+import { connect } from 'react-redux';
 
 import { getFileType, isVideo, isImage } from '../../lib/util';
 import { SEARCH_BY_TITLE } from '../../api';
@@ -19,7 +20,11 @@ class UploadView extends Component {
       title: '',
       genre: '',
       rating: '',
+      poster: '',
+      movie: '',
       searchResults: [],
+      hasUploaded: false,
+      hasFoundTitle: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,22 +41,41 @@ class UploadView extends Component {
 
     const { type, name, value, files } = event.target;
 
-    let postURL = null;
-    return superagent.get(`${__API_URL__}/presignedURL`)
-      .then(response => {
-        console.log(response);
-        return response.body;
+    return superagent.get(`${__API_URL__}/profiles/me`)
+      .set('Authorization', `Bearer ${this.props.token}`)
+      .then(profile => {
+        let data = profile;
+        data.key = 'testing123';
+        return superagent.post(`${__API_URL__}/presignedURL`)
+          .set('Authorization', `Bearer ${this.props.token}`)
+          .send(data);
       })
-      .then(postURL => {
-        console.log(postURL);
-        return superagent.put(postURL)
-          .set('Content-Type', 'application/octet-stream')
-          .send(this.state.movie)
-          .on('progress', e => console.log(e.percent))
-          .then(console.log)
-          .catch(console.log);
-      })
-      .catch(console.log);
+      .then(console.log);
+    // return superagent.get(`${__API_URL__}/presignedURL`)
+    //   .then(response => {
+    //     return response.body;
+    //   })
+    //   .then()
+    //   .then(postURL => {
+    //     return superagent.put(postURL)
+    //       .set('Content-Type', 'application/octet-stream')
+    //       .send(this.state.movie)
+    //       .on('progress', e => console.log(e.percent));
+    //   });
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+
+    this.setState({ [name]: value });
+  }
+
+  handleAutoComplete(event) {
+    this.setState({ title: event.target.value }, () => {
+      return SEARCH_BY_TITLE(this.state.title)
+        .then(this.parseResults)
+        .then(searchResults => this.setState({ searchResults }));
+    });
   }
 
   parseResults(searchResults) {
@@ -68,44 +92,18 @@ class UploadView extends Component {
     });
   }
 
-  handleChange(event) {
-    console.log(event.target);
-    const { type, name, value, files } = event.target;
-    if (type === 'file') {
-      // for poster art preview in browser
-      if (name === 'poster') {
-        fileToDataURL(files[0])
-          .then(posterPreview => this.setState({ posterPreview }));
-      }
-
-      this.setState({
-        [name]: files[0],
-      });
-    } else {
-      this.setState({ [name]: value });
-    }
-  }
-
-  handleAutoComplete(event) {
-    this.setState({ title: event.target.value }, () => {
-      return SEARCH_BY_TITLE(this.state.title)
-        .then(this.parseResults)
-        .then(searchResults => this.setState({ searchResults }));
-    });
-  }
-
-  validateDrop(files) {
-    if (files.length === 1 && files[0] instanceof File) {
-      return files;
-    }
-  }
-
   handleDrop(files) {
-    const validatedFiles = this.validateDrop(files);
+    const validatedFile = this.validateDrop(files);
 
     this.setState({
-      movie: validatedFiles[0],
+      movie: validatedFile[0],
     });
+  }
+
+  validateDrop(file) {
+    if (file.length === 1 && file instanceof File) {
+      return file;
+    }
   }
 
   handleSubmit(event) {
@@ -120,6 +118,9 @@ class UploadView extends Component {
 
   render() {
 
+    const showTitle = this.state.hasUploaded ? 'populated-field' : 'hidden';
+    const showInfo = this.state.hasFoundTitle ? 'populated-field' : 'hidden';
+
     const renderItem = (item, highlighted) =>
       <div key={item.id} className='autocomplete-item'>
         <img src={item.posterPath} className='autocomplete-image'/>
@@ -129,9 +130,10 @@ class UploadView extends Component {
     const renderInput = props =>
       <input
         {...props}
-        className='populated-field'
+        className={ showTitle }
         placeholder='title'
       />;
+
 
     return (
       <div className='upload-view'>
@@ -157,7 +159,7 @@ class UploadView extends Component {
             value={this.state.genre}
             placeholder='genre'
             onChange={this.handleChange}
-            className='populated-field'
+            className={ showInfo }
           />
           <input
             type='text'
@@ -165,7 +167,7 @@ class UploadView extends Component {
             value={this.state.rating}
             placeholder='rating'
             onChange={this.handleChange}
-            className='populated-field'
+            className={ showInfo }
           />
           <label>Poster Art</label>
           <React.Fragment></React.Fragment>
@@ -208,4 +210,8 @@ const fileToDataURL = file => {
   });
 };
 
-export default UploadView;
+const mapStateToProps = state => ({
+  token: state.token,
+});
+
+export default connect(mapStateToProps)(UploadView);
