@@ -23,6 +23,7 @@ class UploadView extends Component {
       poster: '',
       movie: '',
       searchResults: [],
+      foundMovie: {},
       hasUploaded: false,
       hasFoundTitle: false,
     };
@@ -83,7 +84,7 @@ class UploadView extends Component {
     const posterURL = 'https://image.tmdb.org/t/p/w92';
     return searchResults.map((result, i) => {
       return {
-        id: i,
+        id: result.id,
         label: result.original_title,
         posterPath: `${posterURL}/${result.poster_path}`,
         rating: result.popularity,
@@ -94,14 +95,16 @@ class UploadView extends Component {
 
   handleDrop(files) {
     const validatedFile = this.validateDrop(files);
+    console.log(validatedFile);
 
     this.setState({
       movie: validatedFile[0],
+      hasUploaded: true,
     });
   }
 
   validateDrop(file) {
-    if (file.length === 1 && file instanceof File) {
+    if (file.length === 1) {
       return file;
     }
   }
@@ -116,15 +119,25 @@ class UploadView extends Component {
     });
   }
 
+  populateValues() {
+    return superagent.get;
+  }
+
   render() {
 
     const showTitle = this.state.hasUploaded ? 'populated-field' : 'hidden';
     const showInfo = this.state.hasFoundTitle ? 'populated-field' : 'hidden';
 
     const renderItem = (item, highlighted) =>
-      <div key={item.id} className='autocomplete-item'>
-        <img src={item.posterPath} className='autocomplete-image'/>
-        {item.label}
+      <div>
+        <div
+          key={item.id}
+          className='autocomplete-item'
+          onClick={() => this.setState({ foundMovie: item })}
+        >
+          <img src={item.posterPath} className='autocomplete-image'/>
+          {item.label}
+        </div>;
       </div>;
 
     const renderInput = props =>
@@ -150,7 +163,9 @@ class UploadView extends Component {
             renderInput={ renderInput }
             menuStyle={ menuStyling }
             onSelect={value => {
-              return this.setState({ title: value });
+              console.log(value);
+              this.populateValues();
+              return this.setState({ title: value, hasFoundTitle: true });
             }}
           />
           <input
