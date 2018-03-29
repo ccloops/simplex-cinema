@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
 
-import { getFileType, isVideo, isImage } from '../../lib/util';
+import { getFileType, isVideo, isImage, genreList } from '../../lib/util';
 import { SEARCH_BY_TITLE } from '../../api';
 import { menuStyling } from './menu-styling';
 
@@ -34,35 +34,34 @@ class UploadView extends Component {
     this.handleDrop = this.handleDrop.bind(this);
     this.parseResults = this.parseResults.bind(this);
     this.handleAutoComplete = this.handleAutoComplete.bind(this);
-    this.test = this.test.bind(this);
   }
 
-  test(event) {
+  handleSubmit(event) {
     event.preventDefault();
 
     const { type, name, value, files } = event.target;
 
+    // Get profile info for meta-data
     return superagent.get(`${__API_URL__}/profiles/me`)
       .set('Authorization', `Bearer ${this.props.token}`)
       .then(profile => {
         let data = profile;
-        data.key = 'testing123';
+        data.key = this.state.title;
+
+        /* Post meta-data for postURL -- needed for eventual post
+         * request to database from AWS Lambda */
         return superagent.post(`${__API_URL__}/presignedURL`)
           .set('Authorization', `Bearer ${this.props.token}`)
-          .send(data);
+          .send(data)
+          .then(response => response.body);
       })
-      .then(console.log);
-    // return superagent.get(`${__API_URL__}/presignedURL`)
-    //   .then(response => {
-    //     return response.body;
-    //   })
-    //   .then()
-    //   .then(postURL => {
-    //     return superagent.put(postURL)
-    //       .set('Content-Type', 'application/octet-stream')
-    //       .send(this.state.movie)
-    //       .on('progress', e => console.log(e.percent));
-    //   });
+      .then(postURL => {
+        // Post the movie to S3 via presignedURL
+        return superagent.put(postURL)
+          .set('Content-Type', 'application/octet-stream')
+          .send(this.state.movie)
+          .on('progress', e => console.log(e.percent));
+      });
   }
 
   handleChange(event) {
@@ -82,13 +81,19 @@ class UploadView extends Component {
   parseResults(searchResults) {
     console.log(searchResults);
     const posterURL = 'https://image.tmdb.org/t/p/w92';
+    const posterURL2 = 'https://image.tmdb.org/t/p/w300';
+
+    this.setState({ poster: posterURL2 });
+
     return searchResults.map((result, i) => {
       return {
         id: result.id,
         label: result.original_title,
-        posterPath: `${posterURL}/${result.poster_path}`,
+        posterThumb: `${posterURL}/${result.poster_path}`,
+        poster: `${posterURL2}/${result.poster_path}`,
         rating: result.popularity,
         releaseDate: result.release_date,
+        genres: result.genre_ids,
       };
     });
   }
@@ -109,24 +114,29 @@ class UploadView extends Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.onComplete(this.state);
-    this.setState({
-      title: '',
-      genre: '',
-      rating: '',
-    });
-  }
-
   populateValues() {
-    return superagent.get;
+    const { genres, poster, rating } = this.state.foundMovie;
+
+    const parsedGenres = genres
+      .map(id => {
+        return genreList.get(id.toString());
+      });
+
+    this.setState({
+      poster,
+      rating,
+      genre: parsedGenres[0],
+    });
   }
 
   render() {
 
     const showTitle = this.state.hasUploaded ? 'populated-field' : 'hidden';
     const showInfo = this.state.hasFoundTitle ? 'populated-field' : 'hidden';
+    const showTitleLabel = this.state.hasUploaded ? '' : 'hidden';
+    const showInfoLabel = this.state.hasFoundTitle ? '' : 'hidden';
+    const dropzoneOrPoster = this.state.hasFoundTitle ?
+      <img src={this.state.poster} /> : <DropZone handleDrop={this.handleDrop} />;
 
     const renderItem = (item, highlighted) =>
       <div>
@@ -135,7 +145,7 @@ class UploadView extends Component {
           className='autocomplete-item'
           onClick={() => this.setState({ foundMovie: item })}
         >
-          <img src={item.posterPath} className='autocomplete-image'/>
+          <img src={item.posterThumb} className='autocomplete-image'/>
           {item.label}
         </div>;
       </div>;
@@ -151,9 +161,10 @@ class UploadView extends Component {
     return (
       <div className='upload-view'>
         <h1>Upload</h1>
-        <DropZone handleDrop={this.handleDrop}/>
+        { dropzoneOrPoster }
         <ProgressBar />
-        <form className='movie-form' onSubmit={this.test}>
+        <form className='movie-form' onSubmit={this.handleSubmit}>
+          <label className={ showTitleLabel }>Title</label>
           <Autocomplete
             value={this.state.title}
             onChange={this.handleAutoComplete}
@@ -168,6 +179,7 @@ class UploadView extends Component {
               return this.setState({ title: value, hasFoundTitle: true });
             }}
           />
+          <label className={ showInfoLabel }>Genre</label>
           <input
             type='text'
             name='genre'
@@ -176,6 +188,7 @@ class UploadView extends Component {
             onChange={this.handleChange}
             className={ showInfo }
           />
+          <label className={ showInfoLabel }>Rating</label>
           <input
             type='text'
             name='rating'
@@ -184,24 +197,8 @@ class UploadView extends Component {
             onChange={this.handleChange}
             className={ showInfo }
           />
-          <label>Poster Art</label>
-          <React.Fragment></React.Fragment>
-          <input
-            type='file'
-            name='poster'
-            onChange={this.handleChange}
-            className='file-field poster'
-          />
-          <label>Movie</label>
-          <input
-            type= 'file'
-            name='movie'
-            onChange={this.handleChange}
-            className='file-field movie'
-            title=' '
-          />
           <br />
-          <button type='submit'>Upload Movie</button>
+          <button className={ showInfo } type='submit'>Upload Movie</button>
         </form>
       </div>
     );
