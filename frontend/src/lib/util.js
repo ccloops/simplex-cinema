@@ -28,4 +28,4 @@ export const isImage = type => {
   return extensionSet.has(type);
 };
 
-export const genreList = new Set(genres);
+export const genreList = new Map(genres);

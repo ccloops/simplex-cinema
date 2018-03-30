@@ -6,6 +6,7 @@ const upload = multer({ dest: `${__dirname}/../../temp`});
 
 export default (request, response, next) => {
   const contentType = request.headers['content-type'];
+  console.log('ct ==>', contentType);
 
   if (contentType.indexOf('application/json') > -1) {
     return bodyParser.json()(request, response, next);

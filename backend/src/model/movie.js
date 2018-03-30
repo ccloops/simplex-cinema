@@ -86,6 +86,10 @@ Movie.create = function(request) {
     });
 };
 
+Movie.createPoster = function(request) {
+  return util.s3UploadPoster(request);
+};
+
 Movie.fetch = util.pagerCreate(Movie, '');
 
 Movie.fetchOne = function(request) {
