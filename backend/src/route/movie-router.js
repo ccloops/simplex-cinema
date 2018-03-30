@@ -13,6 +13,11 @@ export default new Router()
       .then(response.json)
       .catch(next);
   })
+  .post('/poster', bearerAuth, parserBody, (request, response, next) => {
+    return Movie.createPoster(request)
+      .then(url => response.json(url))
+      .catch(next);
+  })
   .post('/presignedURL', bearerAuth, parserBody, (request, response, next) => {
     return getPresignedPost(request)
       .then(response.json)

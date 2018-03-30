@@ -42,18 +42,25 @@ class UploadView extends Component {
     const { type, name, value, files } = event.target;
 
     // Get profile info for meta-data
-    return superagent.get(`${__API_URL__}/profiles/me`)
+    return superagent.post(`${__API_URL__}/poster`)
       .set('Authorization', `Bearer ${this.props.token}`)
-      .then(profile => {
-        let data = profile;
-        data.key = this.state.title;
-
-        /* Post meta-data for postURL -- needed for eventual post
-         * request to database from AWS Lambda */
-        return superagent.post(`${__API_URL__}/presignedURL`)
+      .set('Content-Type', 'application/json')
+      .send({ poster: this.state.poster, key: this.state.title })
+      .then(posterURL => {
+        return superagent.get(`${__API_URL__}/profiles/me`)
           .set('Authorization', `Bearer ${this.props.token}`)
-          .send(data)
-          .then(response => response.body);
+          .then(profile => {
+            let data = profile;
+            data.key = this.state.title;
+            data.posterURL = posterURL.body;
+
+            /* Post meta-data for postURL -- needed for eventual post
+           * request to database from AWS Lambda */
+            return superagent.post(`${__API_URL__}/presignedURL`)
+              .set('Authorization', `Bearer ${this.props.token}`)
+              .send(data)
+              .then(response => response.body);
+          });
       })
       .then(postURL => {
         // Post the movie to S3 via presignedURL

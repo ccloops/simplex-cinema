@@ -2,6 +2,7 @@
 
 import AWS from 'aws-sdk';
 import fs from 'fs-extra';
+import superagent from 'superagent';
 
 const s3 = new AWS.S3();
 
@@ -17,7 +18,6 @@ export const s3UploadFile = data => {
       Bucket: process.env.AWS_BUCKET,
       Key: `${data[0].filename}.${data[0].originalname}`,
       Body: fs.createReadStream(data[0].path),
-      Metadata: { test: 'test', cameron: '123' },
     }).promise()
       .catch(err => { throw err; });
   };
@@ -72,13 +72,22 @@ export const pagerCreate = (model, populate = '') => (req, query = {}) => {
 };
 
 export const getPresignedPost = request => {
-  console.log(request.body);
+  console.log('BODY ===>', request.body.body);
+  const { key, posterURL } = request.body;
+  const { _id, name, account } = request.body.body;
+
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      Key: request.body.key,
+      Key: key,
       Expires: 3600,
       ContentType: 'application/octet-stream',
+      Metadata: {
+        _id,
+        name,
+        account,
+        posterURL,
+      },
     };
 
     s3.getSignedUrl('putObject', params, (error, url) => {
@@ -89,4 +98,33 @@ export const getPresignedPost = request => {
       }
     });
   });
+};
+
+export const s3UploadPoster = request => {
+  const { poster, key } = request.body;
+
+
+  return superagent.get(poster)
+    .then(response => {
+      const params = {
+        ACL: 'public-read',
+        Bucket: process.env.AWS_POSTER_BUCKET,
+        Key: key,
+        Body: response.body,
+      };
+
+
+      return new Promise((resolve, reject) => {
+        s3.putObject(params, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            const url = `https://s3-us-west-2.amazonaws.com/simplex-cinema/${key}`;
+            resolve(url);
+          }
+        });
+      });
+
+    })
+    .catch(console.log);
 };
