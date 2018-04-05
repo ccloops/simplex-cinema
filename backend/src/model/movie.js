@@ -86,6 +86,19 @@ Movie.create = function(request) {
     });
 };
 
+Movie.createFromLambda = function(request) {
+  console.log('REQUEST ===>', request);
+  return new Movie({
+    account: request.account,
+    profile: request._id,
+    movieURL: request.movieURL,
+    posterURL: request.posterurl,
+    title: request.title,
+    genre: request.genre,
+    rating: request.rating,
+  }).save();
+};
+
 Movie.createPoster = function(request) {
   return util.s3UploadPoster(request);
 };
