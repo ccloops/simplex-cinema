@@ -13,9 +13,21 @@
 
   button {
     padding: 0.2em;
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &:visited {
+      color: $dark-primary-color;
+    }
+
+    &:hover {
+      background-color: $light-primary-color;
+      cursor: pointer;
+    }
   }
   
-  button:hover {
-    cursor: pointer;
-  }
+  // button:hover {
+  // }
 }

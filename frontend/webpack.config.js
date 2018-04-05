@@ -54,6 +54,17 @@ webPackConfig.module = {
       loader: 'babel-loader',
     },
     {
+      test: /\.(pdf|jpg|gif|png|svg)$/,
+      exclude: /\.icon\.svg$/,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'image/[name].[hash].[ext]',
+        },
+      }],
+    },
+    {
       test:  /\.scss$/,
       loader: ExtractTextPlugin.extract({
         fallback: 'style-loader',

@@ -1,6 +1,9 @@
 @import "vars";
 
 .landing {
+  
+  background-color: $lavendar-color;
+
   .logo {
     font-family: $font-title;
     font-size: 30px;
@@ -17,22 +20,37 @@
     text-align: center;
     top: 30%;
 
-    a {
-      text-align: center;
-      margin: 0 auto;
-      width: max-content;
+      a {
+        text-align: center;
+        margin: 20px auto;
+        width: max-content;
+        padding: 5px 30px;
+
+          &:active {
+            transform: translateY(1px);
+          }
+
+          &:visited {
+            color: $dark-primary-color;
+          }
+
+          &:hover {
+            color: $pink-color;
+          }
+       }
     }
-
-    a:visited {
-      color: $dark-primary-color;
-    }
-  }
-
-  #login, #signup {
-
-  }
 
   h1 {
+    -webkit-animation: fadein 2s; 
+    -moz-animation: fadein 2s; 
+     -ms-animation: fadein 2s; 
+      -o-animation: fadein 2s; 
+         animation: fadein 2s;
+  
+         @keyframes fadein {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+      }
     font-size: 30px;
     margin-bottom: 0.5em;
   }
