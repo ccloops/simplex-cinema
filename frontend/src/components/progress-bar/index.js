@@ -1,17 +1,15 @@
+import './_progress-bar.scss';
 import React from 'react';
-import { connect } from 'react-redux';
-import { progressAction } from '../../action/client-movies';
 
 const ProgressBar = ({ uploadProgress }) => {
-  const bar = uploadProgress / 100;
+  const bar = uploadProgress + '%';
+  console.log(uploadProgress);
 
   return (
-    <div>{ uploadProgress }</div>
+    <div className="progress">
+      <div className="bar" style={{width: bar}}></div>
+    </div>
   );
 };
 
-const mapStateToProps = state => ({
-  uploadProgress: state.uploadProgress,
-});
-
-export default connect(mapStateToProps)(ProgressBar);
+export default ProgressBar;

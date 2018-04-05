@@ -3,7 +3,8 @@
 .drop-zone {
   width: 400px;
   height: 200px;
-  border: solid 1px black;
+  border: solid 1px $black-color;
+  margin: 0 auto;
 
   .fa-upload {
     width: 3em;

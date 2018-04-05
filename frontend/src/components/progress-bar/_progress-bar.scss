@@ -1,0 +1,13 @@
+@import "vars";
+
+.progress {
+  width: 100%;
+  background-color: $gray-color;
+  border: 2px solid $black-color;
+  margin: 0 auto;
+}
+
+.bar {
+  height: 1em;
+  background-color: $primary-color;
+}
