@@ -219,8 +219,6 @@ class UploadView extends Component {
   }
 }
 
-// <button type='button' onClick={this.test}>FETCH URL</button>
-
 const fileToDataURL = file => {
   return new Promise((resolve, reject) => {
     if (!file) {
