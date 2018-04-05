@@ -53,6 +53,9 @@ class UploadView extends Component {
             let data = profile;
             data.key = this.state.title;
             data.posterURL = posterURL.body;
+            data.title = this.state.title;
+            data.genre = this.state.genre;
+            data.rating = this.state.rating;
 
             /* Post meta-data for postURL -- needed for eventual post
            * request to database from AWS Lambda */

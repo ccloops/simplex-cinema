@@ -72,8 +72,8 @@ export const pagerCreate = (model, populate = '') => (req, query = {}) => {
 };
 
 export const getPresignedPost = request => {
-  console.log('BODY ===>', request.body.body);
-  const { key, posterURL } = request.body;
+  console.log('BODY ===>', request.body);
+  let { key, posterURL, genre, title, rating } = request.body;
   const { _id, name, account } = request.body.body;
 
   return new Promise((resolve, reject) => {
@@ -87,6 +87,9 @@ export const getPresignedPost = request => {
         name,
         account,
         posterURL,
+        genre,
+        title,
+        rating: rating.toString(),
       },
     };
 

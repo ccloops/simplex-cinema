@@ -18,6 +18,12 @@ export default new Router()
       .then(url => response.json(url))
       .catch(next);
   })
+  .post('/moviesLambda', parserBody, (request, response, next) => {
+    console.log(request.body);
+    return Movie.createFromLambda(request.body)
+      .then(response.json)
+      .catch(next);
+  })
   .post('/presignedURL', bearerAuth, parserBody, (request, response, next) => {
     return getPresignedPost(request)
       .then(response.json)
