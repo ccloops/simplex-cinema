@@ -26,6 +26,7 @@ class UploadView extends Component {
       foundMovie: {},
       hasUploaded: false,
       hasFoundTitle: false,
+      uploadProgress: 0,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,7 +71,10 @@ class UploadView extends Component {
         return superagent.put(postURL)
           .set('Content-Type', 'application/octet-stream')
           .send(this.state.movie)
-          .on('progress', e => console.log(e.percent));
+          .on('progress', e => {
+            console.log(e.percent);
+            this.setState({ uploadProgress: e.percent});
+          });
       });
   }
 
@@ -172,7 +176,7 @@ class UploadView extends Component {
       <div className='upload-view'>
         <h1>Upload</h1>
         { dropzoneOrPoster }
-        <ProgressBar />
+        <ProgressBar uploadProgress={this.state.uploadProgress} />
         <form className='movie-form' onSubmit={this.handleSubmit}>
           <label className={ showTitleLabel }>Title</label>
           <Autocomplete
@@ -214,8 +218,6 @@ class UploadView extends Component {
     );
   }
 }
-
-// <button type='button' onClick={this.test}>FETCH URL</button>
 
 const fileToDataURL = file => {
   return new Promise((resolve, reject) => {
